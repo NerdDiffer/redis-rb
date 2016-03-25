@@ -36,6 +36,21 @@ class TestCommandsOnSortedSets < Test::Unit::TestCase
     end
   end
 
+  def test_zlexcount
+    target_version "2.8.9" do
+      r.zadd "foo", 0, "a"
+      r.zadd "foo", 0, "b"
+      r.zadd "foo", 0, "c"
+      r.zadd "foo", 0, "d"
+      r.zadd "foo", 0, "e"
+      r.zadd "foo", 0, "f"
+      r.zadd "foo", 0, "g"
+
+      assert_equal 7, r.zlexcount("foo", "-", "+")
+      assert_equal 5, r.zlexcount("foo", "[b", "[f")
+    end
+  end
+
   def test_zcount
     r.zadd "foo", 1, "s1"
     r.zadd "foo", 2, "s2"

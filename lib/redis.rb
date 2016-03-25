@@ -1710,6 +1710,13 @@ class Redis
     end
   end
 
+  # Return the number of elements in sorted set at key with a value between min & max.
+  def zlexcount(key, min, max)
+    synchronize do |client|
+      client.call([:zlexcount, key, min, max])
+    end
+  end
+
   # Return a range of members in a sorted set, by score.
   #
   # @example Retrieve members with score `>= 5` and `< 100`
